@@ -1,0 +1,55 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>test</title>
+    <script src="{% static 'vendor/jquery/jquery.js' %}"></script>
+    <style>
+        .max{
+            width: 100%;
+            height: auto;
+        }
+        .min{
+            width: 200px;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <!--<img src="" id="img" class="min"/>-->
+        <img src="" id="img" class="min" />
+    </div>
+    <script>
+           var str = window.location.href;
+           var arrStr = window.location.href.split("=");
+
+           {#var myStr = window.location.href.split("=")[1];#}
+           var myStr = arrStr[1];
+           {#console.log(arrStr[1])#}
+           console.log("接收到了"+myStr);
+           var obj = document.getElementById("img");
+           obj.setAttribute("src","/static/media/resize/src/"+myStr+".jpg");
+
+    </script>
+    <script>
+        $(function () {
+           $('#img').click(function () {
+                $(this).toggleClass('min');
+                $(this).toggleClass('max');
+           });
+        });
+    </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
