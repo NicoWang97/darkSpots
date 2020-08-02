@@ -16,7 +16,6 @@ Including another URLconf
 """
 from django.conf.urls import url
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
-from django.contrib import staticfiles
 from django.contrib import admin
 from darkSpots import views
 urlpatterns = [
@@ -27,10 +26,7 @@ urlpatterns = [
     url(r'^details',views.details),
     url(r'^upload_success/',views.success),
     url(r'^upload_fail/',views.fail),
-    url(r'^images/',views.fail),
-    url(r'^deal_pic/',views.ok),
-    url(r'^pic_details/',views.func),
-    url(r'^data/',views.data),
+    url(r'^data/',views.data), #单张图片的详情页
 
 ]
 

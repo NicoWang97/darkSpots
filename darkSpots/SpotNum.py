@@ -34,11 +34,11 @@ def deal_spot_pic(src_path,dst_path):
     img_mean1 = cv.blur(img_mean, (17, 17))
     img_mean2 = cv.blur(img_mean1, (17, 17))
     scharr_xy = scharr(img_mean2) # 4边缘检测  调用函数
-    kernel=np.ones((7,7),np.uint8)  # 5先开再闭运算
+    kernel=np.ones((11,11),np.uint8)  # 5先开再闭运算
     # 开运算先腐蚀，再膨胀，可清除一些小东西(亮的)，放大局部低亮度的区域
     opening = cv.morphologyEx(scharr_xy,cv.MORPH_OPEN,kernel)
     # 闭运算：先膨胀，再腐蚀，可清除小黑点
-    kernel=np.ones((5,5),np.uint8)
+    kernel=np.ones((7,7),np.uint8)
     closing = cv.morphologyEx(opening, cv.MORPH_CLOSE, kernel)
     counters,hierarchy = cv.findContours(closing,cv.RETR_TREE,cv.CHAIN_APPROX_SIMPLE) # 6获得所有的联通区域
     cv.drawContours(img,counters,-1,(0,0,255),3)

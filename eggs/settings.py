@@ -38,7 +38,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'darkSpots',
-    'django_celery_results',
 ]
 
 MIDDLEWARE = [
@@ -130,11 +129,6 @@ STATIC_URL = '/static/'
 MEDIA_ROOT = 'D:/assignment_code/eggs/darkSpots/static/media/'
 
 
-CELERY_BROKER_URL = 'redis://127.0.0.1:6379/0' # Broker配置，使用Redis作为消息中间件
-
-CELERY_RESULT_BACKEND = 'django-db' # BACKEND配置，这里使用redis redis://10.1.210.69:6379/0  django-db
-
-CELERY_RESULT_SERIALIZER = 'json' # 结果序列化方案
 
 
 

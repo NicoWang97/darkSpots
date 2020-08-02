@@ -1,19 +1,15 @@
 # coding: utf-8
 from django.shortcuts import render,redirect,HttpResponse
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from django.http import JsonResponse
 from eggs import settings
 from .models import EggSpot
 from . import SpotNum,ResizePic
-from . import task
 import hashlib
 import time
 
 
-def index(request,*args,**kwargs):
-    res = task.add.delay(2, 3)
-    return JsonResponse({'status': 'successful', 'task_id': res.task_id})
-    # return render(request,'index.html')
+def index(request):
+    return render(request,'index.html')
 
 
 def upload(request):
@@ -46,6 +42,9 @@ def upload_handle(request):
         pic = request.FILES['pic']
         if pic:
             pic_id = make_file_id()
+            context = {
+                'pic_id': pic_id
+            }
             pic_name = '%s.%s'%(pic_id,pic.name.split('.')[1])
             # print(pic_name)
             save_path = '%ssrc/%s'%(settings.MEDIA_ROOT,pic_name)
@@ -65,7 +64,7 @@ def upload_handle(request):
             else:
                 is_dark_spots = 0
             EggSpot.objects.create(picture_id=pic_id, path=url,spot_num=spot_num,spot_square=spot_square,is_dark_spots=is_dark_spots,dst_url=dst_url)
-            return redirect('/upload_success')
+            return redirect('/upload_success',context)
     except Exception as e:
         print("error:  ",e)
         return redirect('/upload_fail')
@@ -91,7 +90,7 @@ def details(request):
 
 def data(request):
     nid = request.GET.get('pic_id')
-    print(nid)
+    # print(nid)
     pic_detail = EggSpot.objects.get(picture_id=nid)
     pic_id = pic_detail.picture_id
     src_url = pic_detail.path
@@ -108,46 +107,6 @@ def data(request):
     }
     return render(request,'pic-details.html',context)
 
-
-def ok(request):
-    print(request.body)
-    print(request.content_params)
-    return HttpResponse('ol')
-
-
-def func(request):
-    return ('OK')
-
-
-
-
-
-# def JsonError(error_str, code):
-#     json_error = {
-#         "error_str": error_str,
-#         "error_code": code
-#     }
-#     return json_error
-#
-#
-# def catch_exception(func, code=500, *args, **kwargs):
-#     '''
-#     :param func:
-#     :return:
-#     '''
-#     @functools.wraps(func, *args, **kwargs)
-#     def nefen(request, *args, **kwargs):
-#         try:
-#           back = func(request, *args, **kwargs)
-#           return back
-#         except Exception as e:
-#           # string = "捕获到异常"
-#           # x = type(e)
-#           #
-#           # if x == ValueError:
-#           #   string = "数值转换异常:" + str(e)
-#           return JsonError(error_string=str(e), code=code)
-#     return nefen
 
 
 # https://blog.csdn.net/cxh6863/article/details/88381235  图片url
